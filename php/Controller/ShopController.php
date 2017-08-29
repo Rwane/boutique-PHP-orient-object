@@ -1,22 +1,25 @@
 <?php
-class ShopController {
-//    public function itemsHome() {
-    public function single($id) {
-        require "php/Model/ItemsModel.php";		 // charger le fichier PHP
-        $dbItem = new ItemsModel();
-        $itemHome = $dbItem -> listenerItem($id);
+require "controller.php";
+    class ShopController extends controller{
 
-        if(sizeof($itemHome) != 1){
-            header("Location: ".HOST.FOLDER."404");
-        }else{
+        public function __construct(){
+            parent:: __construct();
+        }
+        public function single($id)
+        {
             
-            require("shop-single.php");
-            echo "<script>let idItem =".$itemsHome[0]["iditems"]."; let typePage=1</script>";
-        } 
-            
-        
+            $itemHome = $this->itemsModel->listenerItem($id);
+            if(sizeof($itemHome) != 1)
+            {
+                header("Location: ".HOST.FOLDER."404");
+            }
+            else
+            {
+                $itemsHome = $this->itemsModel->listenerItems();
+                require("shop-single.php");
+                echo "<script>let idItem = ".$itemHome[0]["iditems"].";let typePage = 1;</script>";
+            }
+        }
+
+
     }
-
-}
-
-?>
